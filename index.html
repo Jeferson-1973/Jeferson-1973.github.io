@@ -3,121 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carta para mi Amor</title>
+    <title>Carta Virtual</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #1a1a1a;
-            color: #fff;
-            text-align: center;
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
-            position: relative;
+            background-color: #f8f0f2;
+            margin: 0;
+            overflow: hidden;
         }
-        .card {
-            background: rgba(255, 255, 255, 0.1);
+        .container {
+            max-width: 90%;
+            width: 400px;
+            background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            max-width: 400px;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.5s, transform 0.5s;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
-        .card.active {
-            opacity: 1;
-            transform: scale(1);
+        .hidden {
+            display: none;
         }
-        button {
+        .btn {
             background: #ff4d6d;
             color: white;
             border: none;
             padding: 10px 20px;
-            margin-top: 20px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            margin-top: 10px;
         }
-        button:disabled {
+        .btn:disabled {
             background: gray;
-            cursor: default;
+            cursor: not-allowed;
         }
-        .heart-container {
-            position: absolute;
+        #hearts-container {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             pointer-events: none;
-            display: none;
+            overflow: hidden;
         }
         .heart {
             position: absolute;
-            color: red;
-            font-size: 24px;
-            animation: float 3s linear infinite;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.5);
-                opacity: 0;
-            }
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 80%, 20% 100%, 0% 35%);
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <div class="card active" id="card1">Nosotros</div>
-    <div class="card" id="card2">Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</div>
-    <div class="card" id="card3">Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.</div>
-    <div class="card" id="card4">Yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo porque sé que como pareja vales demasiado.</div>
-    <div class="card" id="card5">Como te había dicho antes quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.</div>
-    <div class="card" id="card6">No sé hasta dónde llegaremos, pero sí sé que si fuera por mí siempre estaría con vos.</div>
-    <div class="card" id="card7">Ya van 7 meses a tu lado, pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso.</div>
-    <div class="card" id="card8">
-        <h2>Felices 7 meses mi amor</h2>
-        <img src="nosotros.jpg" alt="Nosotros" style="width: 100%; border-radius: 10px;">
+    <div class="container" id="card-container">
+        <div class="card" id="card1">
+            <h2>Nosotros</h2>
+            <p>Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</p>
+        </div>
+        <div class="card hidden" id="card2">
+            <p>Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.</p>
+        </div>
+        <div class="card hidden" id="card3">
+            <p>Yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo porque sé que como pareja vales demasiado.</p>
+        </div>
+        <div class="card hidden" id="card4">
+            <p>Como te había dicho antes quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.</p>
+        </div>
+        <div class="card hidden" id="card5">
+            <p>No sé hasta donde llegaremos, pero sí sé que si fuera por mí siempre estaría con vos.</p>
+        </div>
+        <div class="card hidden" id="card6">
+            <p>Ya van 7 meses a tu lado pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso.</p>
+        </div>
+        <div class="card hidden" id="card7">
+            <h2>Felices 7 meses mi amor</h2>
+            <img src="imagen.jpg" alt="Nosotros" style="width: 100%; border-radius: 10px;">
+        </div>
+        <button class="btn" id="next-btn">Siguiente</button>
     </div>
-    <button id="nextBtn">Siguiente</button>
-    <div class="heart-container" id="hearts"></div>
+    <div id="hearts-container"></div>
+    
     <script>
         let currentCard = 1;
-        const totalCards = 8;
-        const nextBtn = document.getElementById("nextBtn");
-        const heartsContainer = document.getElementById("hearts");
+        const totalCards = 7;
+        const nextButton = document.getElementById("next-btn");
+        const heartsContainer = document.getElementById("hearts-container");
 
-        nextBtn.addEventListener("click", () => {
-            document.getElementById(`card${currentCard}`).classList.remove("active");
+        nextButton.addEventListener("click", () => {
+            document.getElementById(`card${currentCard}`).classList.add("hidden");
             currentCard++;
             if (currentCard <= totalCards) {
-                document.getElementById(`card${currentCard}`).classList.add("active");
+                document.getElementById(`card${currentCard}`).classList.remove("hidden");
             }
             if (currentCard === totalCards) {
-                nextBtn.style.display = "none";
+                nextButton.style.display = "none";
                 startHeartAnimation();
             }
         });
 
         function startHeartAnimation() {
-            heartsContainer.style.display = "block";
             setInterval(() => {
                 const heart = document.createElement("div");
                 heart.classList.add("heart");
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.top = "-10px";
                 heartsContainer.appendChild(heart);
-                setTimeout(() => heart.remove(), 3000);
-            }, 300);
+                
+                const animation = heart.animate([
+                    { transform: "translateY(0)" },
+                    { transform: "translateY(100vh)" }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: "linear"
+                });
+                
+                animation.onfinish = () => heart.remove();
+            }, 200);
         }
     </script>
 </body>
