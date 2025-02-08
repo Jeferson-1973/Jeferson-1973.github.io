@@ -3,87 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carta para Ti 💌</title>
+    <title>Carta para mi Amor</title>
     <style>
         body {
-            font-family: 'Georgia', serif;
+            font-family: 'Arial', sans-serif;
             background-color: #1a1a1a;
             color: #fff;
             text-align: center;
-            padding: 50px;
-        }
-        .carta {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            display: inline-block;
-            max-width: 600px;
-            animation: fadeIn 2s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .photo {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-        h1 {
-            color: #ff4d4d;
-            font-size: 2em;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            position: relative;
         }
         .card {
-            display: none;
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 10px;
-            margin: 10px auto;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            max-width: 400px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s, transform 0.5s;
         }
-        .active {
-            display: block;
+        .card.active {
+            opacity: 1;
+            transform: scale(1);
         }
         button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1em;
-            background: #ff4d4d;
+            background: #ff4d6d;
             color: white;
             border: none;
-            cursor: pointer;
+            padding: 10px 20px;
+            margin-top: 20px;
             border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:disabled {
+            background: gray;
+            cursor: default;
+        }
+        .heart-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            display: none;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: float 3s linear infinite;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="carta">
-        <h1>Nosotros</h1>
-        <div class="card active">Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</div>
-        <div class="card">Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.</div>
-        <div class="card">Yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo porque sé que como pareja vales demasiado.</div>
-        <div class="card">Como te había dicho antes quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.</div>
-        <div class="card">No sé hasta donde llegaremos pero sí sé que si fuera por mí siempre estaría con vos.</div>
-        <div class="card">Ya van 7 meses a tu lado pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso.</div>
-        <button onclick="nextCard()">Siguiente</button>
-        <div class="card">
-            <h2>Felices 7 meses mi amor</h2>
-            <img src="nosotros.jpg" alt="Nuestra foto juntos" class="photo">
-        </div>
+    <div class="card active" id="card1">Nosotros</div>
+    <div class="card" id="card2">Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</div>
+    <div class="card" id="card3">Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.</div>
+    <div class="card" id="card4">Yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo porque sé que como pareja vales demasiado.</div>
+    <div class="card" id="card5">Como te había dicho antes quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.</div>
+    <div class="card" id="card6">No sé hasta dónde llegaremos, pero sí sé que si fuera por mí siempre estaría con vos.</div>
+    <div class="card" id="card7">Ya van 7 meses a tu lado, pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso.</div>
+    <div class="card" id="card8">
+        <h2>Felices 7 meses mi amor</h2>
+        <img src="nosotros.jpg" alt="Nosotros" style="width: 100%; border-radius: 10px;">
     </div>
-
+    <button id="nextBtn">Siguiente</button>
+    <div class="heart-container" id="hearts"></div>
     <script>
-        let index = 0;
-        const cards = document.querySelectorAll('.card');
-        function nextCard() {
-            if (index < cards.length - 1) {
-                cards[index].classList.remove('active');
-                index++;
-                cards[index].classList.add('active');
+        let currentCard = 1;
+        const totalCards = 8;
+        const nextBtn = document.getElementById("nextBtn");
+        const heartsContainer = document.getElementById("hearts");
+
+        nextBtn.addEventListener("click", () => {
+            document.getElementById(`card${currentCard}`).classList.remove("active");
+            currentCard++;
+            if (currentCard <= totalCards) {
+                document.getElementById(`card${currentCard}`).classList.add("active");
             }
+            if (currentCard === totalCards) {
+                nextBtn.style.display = "none";
+                startHeartAnimation();
+            }
+        });
+
+        function startHeartAnimation() {
+            heartsContainer.style.display = "block";
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+                heartsContainer.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }, 300);
         }
     </script>
 </body>
