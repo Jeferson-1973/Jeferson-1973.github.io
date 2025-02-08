@@ -2,124 +2,163 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Carta Virtual</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a1a;
+            background-color: black;
             color: white;
+            text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            flex-direction: column;
+            padding: 20px;
         }
-        .container {
+
+        h1 {
+            font-size: 40px;
+            color: red;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
             width: 90%;
             max-width: 500px;
-            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
-        .card {
-            background: #333;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            display: none;
-            font-size: 1.3rem; /* Aumentado */
-        }
-        .card.active {
-            display: block;
-        }
+
         button {
-            background: #ff4d6d;
+            background-color: red;
             color: white;
             border: none;
-            padding: 15px 25px;
-            font-size: 1.5rem; /* Aumentado */
-            margin-top: 20px;
-            border-radius: 8px;
+            padding: 15px 30px;
+            font-size: 22px;
+            border-radius: 10px;
             cursor: pointer;
+            margin-top: 20px;
         }
+
         button:disabled {
-            background: gray;
-            cursor: not-allowed;
+            background-color: gray;
+            cursor: default;
         }
-        .hearts {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+
+        .hidden {
             display: none;
         }
+
+        #final {
+            position: relative;
+        }
+
+        img {
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        /* Animación de corazones */
         .heart {
             position: absolute;
-            bottom: -10px;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 80%, 18% 100%, 0% 35%);
-            animation: float 4s linear infinite;
+            color: red;
+            font-size: 30px;
+            animation: float 3s infinite ease-in-out;
+            opacity: 0.8;
         }
+
         @keyframes float {
             0% {
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100vh) scale(0.5);
+                transform: translateY(-200px);
                 opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card active">Nosotros</div>
-        <div class="card">Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</div>
-        <div class="card">Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.</div>
-        <div class="card">Yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo porque sé que como pareja vales demasiado.</div>
-        <div class="card">Como te había dicho antes, quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.</div>
-        <div class="card">No sé hasta dónde llegaremos, pero sí sé que si fuera por mí, siempre estaría contigo.</div>
-        <div class="card">Ya van 7 meses a tu lado, pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso.</div>
-        <div class="card">
-            <h2>Felices 7 meses mi amor</h2>
-            <img src="nosotros.jpg" alt="Nosotros" style="width: 100%; border-radius: 10px;">
-        </div>
-        <button id="nextBtn">Siguiente</button>
-        <div class="hearts" id="hearts"></div>
+
+    <h1 id="title">Nosotros</h1>
+    
+    <div class="card" id="text-container">
+        <p id="text">Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</p>
     </div>
+
+    <button id="nextBtn" onclick="nextText()">Siguiente</button>
+
+    <div id="final" class="hidden">
+        <h1>Felices 7 meses mi amor</h1>
+        <img src="nosotros.jpg" alt="Nosotros">
+    </div>
+
     <script>
-        let currentIndex = 0;
-        const cards = document.querySelectorAll('.card');
-        const nextBtn = document.getElementById('nextBtn');
-        const heartsContainer = document.getElementById('hearts');
+        const texts = [
+            "Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.",
+            "Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.",
+            "Yo quiero que sepas que valoro mucho todo lo que haces y cómo eres conmigo porque sé que como pareja vales demasiado.",
+            "Como te había dicho antes, quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.",
+            "No sé hasta dónde llegaremos, pero sí sé que si fuera por mí, siempre estaría con vos.",
+            "Ya van 7 meses a tu lado, pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso."
+        ];
 
-        nextBtn.addEventListener('click', () => {
-            cards[currentIndex].classList.remove('active');
-            currentIndex++;
-            if (currentIndex < cards.length) {
-                cards[currentIndex].classList.add('active');
-            }
-            if (currentIndex === cards.length - 1) {
-                nextBtn.disabled = true;
-                startHeartsAnimation();
-            }
-        });
+        let index = 0;
 
-        function startHeartsAnimation() {
-            heartsContainer.style.display = 'block';
-            for (let i = 0; i < 30; i++) {
-                let heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                heartsContainer.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
+        function nextText() {
+            index++;
+            if (index < texts.length) {
+                document.getElementById("text").innerText = texts[index];
+            } else {
+                showFinal();
             }
         }
+
+        function showFinal() {
+            document.getElementById("text-container").classList.add("hidden");
+            document.getElementById("nextBtn").classList.add("hidden");
+            document.getElementById("final").classList.remove("hidden");
+            startHeartsAnimation();
+        }
+
+        function startHeartsAnimation() {
+            for (let i = 0; i < 20; i++) {
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+
+            const startX = Math.random() * window.innerWidth;
+            heart.style.left = `${startX}px`;
+            heart.style.bottom = "0";
+
+            const duration = Math.random() * 3 + 2;
+            heart.style.animationDuration = `${duration}s`;
+
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
     </script>
+
 </body>
 </html>
