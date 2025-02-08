@@ -36,27 +36,55 @@
             color: #ff4d4d;
             font-size: 2em;
         }
-        p {
-            font-size: 1.2em;
+        .card {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px auto;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .active {
+            display: block;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="carta">
-        <h1>7 Meses</h1>
-        <p>Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.
-            Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo, 
-            yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo, y como te había dicho anteriormente 
-            quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí y nose hasta donde llegaremos
-            pero si sé que si fuera por mí siempre estaré con vos.
-            Asi que ya van 7 meses a tu lado pero espero que sean muchos más y recuerda que significas mucho para mí
-
-        </p>
-        <img src="nosotros.jpg" alt="Nuestra foto juntos" class="photo">
+        <h1>Nosotros</h1>
+        <div class="card active">Amor, solo quiero darle gracias a Dios por nosotros y por lo que hemos logrado.</div>
+        <div class="card">Siempre he dicho que quiero algo serio, y nunca había sido tan enserio como lo que pienso tener contigo.</div>
+        <div class="card">Yo quiero que sepas que valoro mucho todo lo que haces y como eres conmigo porque sé que como pareja vales demasiado.</div>
+        <div class="card">Como te había dicho antes quiero ser un mejor hombre para ti porque sé que eres una excelente mujer para mí.</div>
+        <div class="card">No sé hasta donde llegaremos pero sí sé que si fuera por mí siempre estaría con vos.</div>
+        <div class="card">Ya van 7 meses a tu lado pero espero que sean muchos más y recuerda que significas mucho para mí y que siempre te pienso.</div>
+        <button onclick="nextCard()">Siguiente</button>
+        <div class="card">
+            <h2>Felices 7 meses mi amor</h2>
+            <img src="nosotros.jpg" alt="Nuestra foto juntos" class="photo">
+        </div>
     </div>
+
+    <script>
+        let index = 0;
+        const cards = document.querySelectorAll('.card');
+        function nextCard() {
+            if (index < cards.length - 1) {
+                cards[index].classList.remove('active');
+                index++;
+                cards[index].classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
-
-
-
-
